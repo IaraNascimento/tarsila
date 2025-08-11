@@ -1,0 +1,7 @@
+.wrapper {
+  background-color: #9c944e;
+  display: flex;
+  min-width: 100vw;
+  min-height: 100vh;
+  padding: 16px;
+}
