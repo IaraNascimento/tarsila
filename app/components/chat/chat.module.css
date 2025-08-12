@@ -1,8 +1,7 @@
 .wrapper {
-  background-color: #353026;
+  background-color: var(--dark);
   display: flex;
   flex-direction: column;
-  justify-content: end;
   margin-left: 16px;
   border-radius: 8px;
   padding: 16px;

@@ -1,17 +1,28 @@
 import style from "./dialog.module.css";
 
+export interface Message {
+  time: Date;
+  text: string;
+  font: string;
+}
+
 interface DialogProps {
-  dialog: Array<string>;
+  dialog: Array<Message>;
 }
 
 export default function Dialog(props: Readonly<DialogProps>) {
   return (
-    <div>
-      {props.dialog.map((text, index) => (
-        <p className={style.message} key={index}>
-          {text}
-        </p>
-      ))}
+    <div className={style.wrapper}>
+      <div className={style.inner}>
+        {props.dialog.map((dialog) => (
+          <p
+            className={dialog.font === "ia" ? style.iaMessage : style.message}
+            key={dialog.time.toDateString()}
+          >
+            {dialog.text}
+          </p>
+        ))}
+      </div>
     </div>
   );
 }

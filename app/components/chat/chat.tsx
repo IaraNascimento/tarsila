@@ -1,11 +1,11 @@
 import ChatInput from "../chat-input/chat-input";
-import Dialog from "../dialog/dialog";
+import Dialog, { Message } from "../dialog/dialog";
 import style from "./chat.module.css";
 
 interface ChatProps {
-  dialog: Array<string>;
+  dialog: Array<Message>;
   chatId: string;
-  newMessage: (text: string) => void;
+  newMessage: (text: string, font: string) => void;
 }
 
 export default function Chat(props: Readonly<ChatProps>) {
@@ -14,7 +14,7 @@ export default function Chat(props: Readonly<ChatProps>) {
       <Dialog dialog={props.dialog} />
       <ChatInput
         chatId={props.chatId}
-        newMessage={(text) => props.newMessage(text)}
+        newMessage={(text, font) => props.newMessage(text, font)}
       />
     </div>
   );

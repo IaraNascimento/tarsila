@@ -10,7 +10,7 @@ export interface Greetings {
   greetings: string;
 }
 
-export interface Message {
+export interface AiMessage {
   ai_message: string;
   draft: string;
 }
@@ -43,7 +43,7 @@ export async function firstLoad(): Promise<Greetings | RequestError> {
 export async function sendMessage(
   chat_id: string,
   message: string
-): Promise<Message | RequestError> {
+): Promise<AiMessage | RequestError> {
   const path = "/chat/text";
   const body = JSON.stringify({
     chat_id,
@@ -57,7 +57,7 @@ export async function sendMessage(
       throw new Error(`HTTP error! status: ${resp.status}`);
     }
 
-    const data = (await resp.json()) as Message;
+    const data = (await resp.json()) as AiMessage;
 
     if (!data.ai_message) {
       throw new Error("Missing ai_message.");

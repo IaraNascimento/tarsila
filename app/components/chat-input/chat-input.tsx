@@ -1,10 +1,10 @@
 import { FormEvent, useState } from "react";
 import style from "./chat-input.module.css";
-import { Message, RequestError, sendMessage } from "@/app/services/services";
+import { AiMessage, RequestError, sendMessage } from "@/app/services/services";
 
 interface ChatInputProps {
   chatId: string;
-  newMessage: (data: string) => void;
+  newMessage: (data: string, font: string) => void;
 }
 
 export default function ChatInput(props: Readonly<ChatInputProps>) {
@@ -12,11 +12,11 @@ export default function ChatInput(props: Readonly<ChatInputProps>) {
 
   function handleSubmit(event: FormEvent, newMsg: string): void {
     event.preventDefault();
-    props.newMessage(`${newMsg}`);
+    props.newMessage(`${newMsg}`, "user");
     sendMessage(props.chatId, newMsg)
-      .then((data: Message | RequestError) => {
-        if ((data as Message)["ai_message"]) {
-          props.newMessage((data as Message).ai_message);
+      .then((data: AiMessage | RequestError) => {
+        if ((data as AiMessage)["ai_message"]) {
+          props.newMessage((data as AiMessage).ai_message, "ia");
         }
       })
       .finally(() => {
@@ -30,10 +30,9 @@ export default function ChatInput(props: Readonly<ChatInputProps>) {
         value={message}
         onChange={(event) => setMessage(event.target.value)}
         className={style.textarea}
+        placeholder="Escreva aqui sua mensagem..."
       ></textarea>
-      <button type="submit" className={style.submit}>
-        enviar
-      </button>
+      <button type="submit">enviar</button>
     </form>
   );
 }

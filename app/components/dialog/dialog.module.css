@@ -1,3 +1,29 @@
+.wrapper {
+  height: 100%;
+  overflow-y: auto;
+}
+
+.inner {
+  display: flex;
+  flex-direction: column;
+  justify-content: end;
+  min-height: 100%;
+}
+
+.iaMessage,
 .message {
-  margin-bottom: 8px;
+  border-radius: 8px;
+  padding: 16px;
+  color: var(--white);
+  margin-bottom: 16px;
+}
+
+.iaMessage {
+  background-color: var(--main-tertiary);
+  align-self: self-start;
+}
+
+.message {
+  background: var(--variant-tertiary);
+  align-self: self-end;
 }

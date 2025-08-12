@@ -1,7 +1,28 @@
 .wrapper {
+  width: 550px;
   min-width: 30%;
-  background-color: #fff7ee;
-  color: #353026;
+  background-color: var(--white);
   border-radius: 8px;
   padding: 16px;
+  text-align: center;
+}
+
+.logo {
+  margin: 80px auto 40px auto;
+}
+
+.title {
+  font-size: 24px;
+  color: var(--variant-tertiary);
+  max-width: 70%;
+  margin: 32px auto;
+  font-style: italic;
+}
+
+.text {
+  font-size: 13px;
+  line-height: 16px;
+  color: var(--main-primary);
+  max-width: 420px;
+  margin: 12px auto;
 }
