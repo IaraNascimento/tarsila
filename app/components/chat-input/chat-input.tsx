@@ -1,26 +1,35 @@
 import { FormEvent, useState } from "react";
 import style from "./chat-input.module.css";
 import { AiMessage, RequestError, sendMessage } from "@/app/services/services";
+import { useLoader } from "@/app/contexts/LoaderProvider";
 
 interface ChatInputProps {
   chatId: string;
-  newMessage: (data: string, font: string) => void;
+  newMessage: (data: string, font: string, draft: null | string) => void;
 }
 
 export default function ChatInput(props: Readonly<ChatInputProps>) {
+  const { showLoader, hideLoader } = useLoader();
+
   const [message, setMessage] = useState<string>("");
 
   function handleSubmit(event: FormEvent, newMsg: string): void {
     event.preventDefault();
-    props.newMessage(`${newMsg}`, "user");
+    showLoader();
+    props.newMessage(`${newMsg}`, "user", null);
     sendMessage(props.chatId, newMsg)
       .then((data: AiMessage | RequestError) => {
         if ((data as AiMessage)["ai_message"]) {
-          props.newMessage((data as AiMessage).ai_message, "ia");
+          props.newMessage(
+            (data as AiMessage).ai_message,
+            "ia",
+            (data as AiMessage).draft
+          );
         }
       })
       .finally(() => {
         setMessage("");
+        hideLoader();
       });
   }
 

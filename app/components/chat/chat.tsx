@@ -5,7 +5,7 @@ import style from "./chat.module.css";
 interface ChatProps {
   dialog: Array<Message>;
   chatId: string;
-  newMessage: (text: string, font: string) => void;
+  newMessage: (data: string, font: string, draft: null | string) => void;
 }
 
 export default function Chat(props: Readonly<ChatProps>) {
@@ -14,7 +14,7 @@ export default function Chat(props: Readonly<ChatProps>) {
       <Dialog dialog={props.dialog} />
       <ChatInput
         chatId={props.chatId}
-        newMessage={(text, font) => props.newMessage(text, font)}
+        newMessage={(text, font, draft) => props.newMessage(text, font, draft)}
       />
     </div>
   );

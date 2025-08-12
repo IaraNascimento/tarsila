@@ -1,4 +1,4 @@
-const url = "http://154.53.63.54:8250";
+const url = "https://tarsila.audiofusion.com.br";
 const headers = { "Content-Type": "application/json" };
 
 export interface RequestError {
