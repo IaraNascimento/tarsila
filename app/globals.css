@@ -48,3 +48,13 @@ button {
   padding: 8px 40px;
   cursor: pointer;
 }
+
+textarea:disabled,
+button:disabled {
+  cursor: progress;
+  opacity: 0.3;
+}
+
+strong {
+  font-weight: bolder;
+}

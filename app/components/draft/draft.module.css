@@ -1,9 +1,13 @@
-.wrapper {
+.wrapper,
+.drafWrapper {
+  background-color: var(--white);
   width: 550px;
   min-width: 30%;
-  background-color: var(--white);
   border-radius: 8px;
   padding: 16px;
+}
+
+.wrapper {
   text-align: center;
 }
 
@@ -26,4 +30,8 @@
   color: var(--main-primary);
   max-width: 420px;
   margin: 12px auto;
+}
+
+.drafWrapper {
+  overflow-y: auto;
 }

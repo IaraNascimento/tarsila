@@ -1,7 +1,6 @@
-import { FormEvent, useState } from "react";
+import { FormEvent, RefObject, useEffect, useRef, useState } from "react";
 import style from "./chat-input.module.css";
 import { AiMessage, RequestError, sendMessage } from "@/app/services/services";
-import { useLoader } from "@/app/contexts/LoaderProvider";
 
 interface ChatInputProps {
   chatId: string;
@@ -9,13 +8,18 @@ interface ChatInputProps {
 }
 
 export default function ChatInput(props: Readonly<ChatInputProps>) {
-  const { showLoader, hideLoader } = useLoader();
+  const targetRef = useRef<null | HTMLTextAreaElement>(null);
 
+  const [loading, setLoading] = useState<boolean>(false);
   const [message, setMessage] = useState<string>("");
 
-  function handleSubmit(event: FormEvent, newMsg: string): void {
+  function handleFormSubmit(event: FormEvent, newMsg: string): void {
     event.preventDefault();
-    showLoader();
+    handleSubmit(`${newMsg}`);
+  }
+
+  function handleSubmit(newMsg: string): void {
+    setLoading(true);
     props.newMessage(`${newMsg}`, "user", null);
     sendMessage(props.chatId, newMsg)
       .then((data: AiMessage | RequestError) => {
@@ -29,19 +33,43 @@ export default function ChatInput(props: Readonly<ChatInputProps>) {
       })
       .finally(() => {
         setMessage("");
-        hideLoader();
+        setLoading(false);
       });
   }
 
+  useEffect(() => {
+    const listener = (event: KeyboardEvent) => {
+      if (event.code === "Enter" || event.code === "NumpadEnter") {
+        // event.preventDefault();
+        handleSubmit(message);
+      }
+    };
+    if (targetRef.current) {
+      targetRef.current.addEventListener("keydown", listener);
+    }
+    return () => {
+      if (targetRef.current) {
+        targetRef.current.removeEventListener("keydown", listener);
+      }
+    };
+  }, [message]);
+
   return (
-    <form className={style.wrapper} onSubmit={(e) => handleSubmit(e, message)}>
+    <form
+      className={style.wrapper}
+      onSubmit={(e) => handleFormSubmit(e, message)}
+    >
       <textarea
+        ref={targetRef}
         value={message}
+        disabled={loading}
         onChange={(event) => setMessage(event.target.value)}
         className={style.textarea}
         placeholder="Escreva aqui sua mensagem..."
       ></textarea>
-      <button type="submit">enviar</button>
+      <button type="submit" disabled={loading}>
+        enviar
+      </button>
     </form>
   );
 }

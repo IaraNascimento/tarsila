@@ -1,6 +1,7 @@
 import style from "./draft.module.css";
 import logo from "../../../public/logo.png";
 import Image from "next/image";
+import MarkdownView from "react-showdown";
 
 interface DraftProps {
   draft: string;
@@ -41,5 +42,14 @@ export default function Draft(props: DraftProps) {
     );
   }
 
-  return props.draft ? props.draft : defaultText();
+  return props.draft ? (
+    <div className={style.drafWrapper}>
+      <MarkdownView
+        markdown={props.draft}
+        options={{ tables: true, emoji: true }}
+      />
+    </div>
+  ) : (
+    defaultText()
+  );
 }
