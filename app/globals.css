@@ -10,7 +10,7 @@
   --dark: #353026;
   --white: #fff7ee;
 
-  --background: var(--main-secondary);
+  --background: var(--white);
   --foreground: var(--main-tertiary);
 }
 

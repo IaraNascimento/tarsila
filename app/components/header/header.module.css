@@ -1,0 +1,12 @@
+.header {
+  position: absolute;
+  text-align: right;
+  top: 0;
+  right: 0;
+  padding: 16px;
+}
+
+.userName {
+  background-color: var(--white);
+  margin-right: 16px;
+}

@@ -1,6 +1,6 @@
-import { FormEvent, RefObject, useEffect, useRef, useState } from "react";
-import style from "./chat-input.module.css";
+import { FormEvent, useEffect, useRef, useState } from "react";
 import { AiMessage, RequestError, sendMessage } from "@/app/services/services";
+import style from "./chat-input.module.css";
 
 interface ChatInputProps {
   chatId: string;
