@@ -4,31 +4,19 @@ import { useEffect, useState } from "react";
 import Chat from "../components/chat/chat";
 import Draft from "../components/draft/draft";
 import style from "./page.module.css";
-import { firstLoad, Greetings } from "../services/services";
-import { Message } from "../components/dialog/dialog";
+import { firstLoad, Conversation } from "../services/services";
 import { useLoader } from "../contexts/LoaderProvider";
+import { useAuth } from "../contexts/AuthProvider";
 
 export default function Criar() {
   const { showLoader, hideLoader } = useLoader();
+  const { currentUser } = useAuth();
+  const [conversation, setConversation] = useState<Conversation>();
 
-  const [chatId, setChatId] = useState<string>("");
-  const [drafts, setDrafts] = useState<Array<string>>([]);
-  const [dialog, setDialog] = useState<Array<Message>>([]);
-
-  function handleNewMessage(
-    text: string,
-    font: string,
-    draft: null | string
-  ): void {
-    newMessage(text, font);
-    if (font === "ia" && draft) {
-      setDrafts((prev) => [...prev, draft]);
-    }
-  }
-
-  function newMessage(text: string, font: string): void {
-    if (text.trim().length > 0) {
-      setDialog((prev) => [...prev, { text, time: new Date(), font }]);
+  function newMessage(messages: Conversation): void {
+    const lastMessage = messages.history.at(-1)
+    if (lastMessage && lastMessage.message.trim().length > 0) {
+      setConversation(messages);
     } else {
       const errorMsg = "Mensagem não pode ser vazia";
       alert(errorMsg);
@@ -38,21 +26,19 @@ export default function Criar() {
 
   useEffect(() => {
     showLoader();
-    firstLoad()
-      .then((data) => {
-        setChatId((data as Greetings).chat_id);
-        newMessage((data as Greetings).greetings, "ia");
-      })
-      .finally(() => hideLoader());
+      firstLoad(currentUser && currentUser.email || "")
+        .then((data) => {
+          newMessage((data as Conversation));
+        })
+        .finally(() => hideLoader());
   }, []);
 
   return (
     <main className={style.wrapper}>
-      <Draft draft={drafts.at(-1) || ""} />
+      <Draft draft={conversation?.draft || ""} />
       <Chat
-        dialog={dialog}
-        chatId={chatId}
-        newMessage={(text, font, draft) => handleNewMessage(text, font, draft)}
+        chatId={currentUser?.email || "" }
+        messages={conversation?.history || []}
       />
     </main>
   );

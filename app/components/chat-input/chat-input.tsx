@@ -1,10 +1,10 @@
 import { FormEvent, useEffect, useRef, useState } from "react";
-import { AiMessage, RequestError, sendMessage } from "@/app/services/services";
+import { Conversation, Message, RequestError, sendMessage } from "@/app/services/services";
 import style from "./chat-input.module.css";
 
 interface ChatInputProps {
   chatId: string;
-  newMessage: (data: string, font: string, draft: null | string) => void;
+  messages: Message[];
 }
 
 export default function ChatInput(props: Readonly<ChatInputProps>) {
@@ -20,18 +20,8 @@ export default function ChatInput(props: Readonly<ChatInputProps>) {
 
   function handleSubmit(newMsg: string): void {
     setLoading(true);
-    props.newMessage(`${newMsg}`, "user", null);
     sendMessage(props.chatId, newMsg)
-      .then((data: AiMessage | RequestError) => {
-        if ((data as AiMessage)["ai_message"]) {
-          props.newMessage(
-            (data as AiMessage).ai_message,
-            "ia",
-            (data as AiMessage).draft
-          );
-        }
-      })
-      .finally(() => {
+      .then((data: Conversation | RequestError) => {
         setMessage("");
         setLoading(false);
       });

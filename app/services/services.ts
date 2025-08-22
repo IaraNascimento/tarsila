@@ -1,37 +1,47 @@
 const url = "https://tarsila.audiofusion.com.br";
 const headers = { "Content-Type": "application/json" };
 
+export enum MSG_TYPES {
+  AI_TEXT = "ai_message",
+  USER_TEXT = "user_message",
+}
+
+export type Message = {
+  msg_type: MSG_TYPES;
+  message: string;
+}
+
 export interface RequestError {
   errorMsg: string;
 }
 
-export interface Greetings {
-  chat_id: string;
-  greetings: string;
+export interface Conversation {
+  history: Message[],
+  draft: string
 }
 
-export interface AiMessage {
-  ai_message: string;
-  draft: string;
-}
-
-export async function firstLoad(): Promise<Greetings | RequestError> {
-  const path = "/new-chat";
+export async function firstLoad(chat_id: string): Promise<Conversation | RequestError> {
+  const path = "/v1/new-chat";
+  const body = JSON.stringify({
+    chat_id,
+  });
 
   try {
-    const resp = await fetch(url + path, { method: "GET", headers });
+    const resp = await fetch(url + path, { method: "POST", headers, body });
 
     if (!resp.ok) {
       throw new Error(`HTTP error! status: ${resp.status}`);
     }
 
-    const data: Greetings = (await resp.json()) as Greetings;
+    const data: Conversation = (await resp.json()) as Conversation;
 
-    if (!data.chat_id) {
-      throw new Error("Missing chatId.");
-    } else if (!data.greetings) {
-      throw new Error("Missing greetings.");
-    }
+    // verifica se dados obrigatorios foram retornados
+
+    // if (!data.chat_id) {
+    //   throw new Error("Missing chatId.");
+    // } else if (!data.greetings) {
+    //   throw new Error("Missing greetings.");
+    // }
 
     return data;
   } catch (error) {
@@ -43,8 +53,8 @@ export async function firstLoad(): Promise<Greetings | RequestError> {
 export async function sendMessage(
   chat_id: string,
   message: string
-): Promise<AiMessage | RequestError> {
-  const path = "/chat/text";
+): Promise<Conversation | RequestError> {
+  const path = "/v1/chat/text";
   const body = JSON.stringify({
     chat_id,
     message,
@@ -57,11 +67,13 @@ export async function sendMessage(
       throw new Error(`HTTP error! status: ${resp.status}`);
     }
 
-    const data = (await resp.json()) as AiMessage;
+    const data = (await resp.json()) as Conversation;
 
-    if (!data.ai_message) {
-      throw new Error("Missing ai_message.");
-    }
+    // verifica se dados obrigatorios foram retornados
+
+    // if (!data.ai_message) {
+    //   throw new Error("Missing ai_message.");
+    // }
 
     return data;
   } catch (error) {

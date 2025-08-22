@@ -1,11 +1,6 @@
 import { useEffect, useRef } from "react";
 import style from "./dialog.module.css";
-
-export interface Message {
-  time: Date;
-  text: string;
-  font: string;
-}
+import { Message, MSG_TYPES } from "@/app/services/services";
 
 interface DialogProps {
   dialog: Array<Message>;
@@ -23,12 +18,12 @@ export default function Dialog(props: Readonly<DialogProps>) {
   return (
     <div className={style.wrapper} ref={targetRef}>
       <div className={style.inner}>
-        {props.dialog.map((dialog) => (
+        {props.dialog.map((dialog, index) => (
           <p
-            className={dialog.font === "ia" ? style.iaMessage : style.message}
-            key={dialog.time.toDateString()}
+            className={dialog.msg_type === MSG_TYPES.AI_TEXT ? style.iaMessage : style.message}
+            key={index}
           >
-            {dialog.text}
+            {dialog.message}
           </p>
         ))}
       </div>
