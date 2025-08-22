@@ -1,13 +1,14 @@
+"use client";
+
 import style from "./draft.module.css";
 import logo from "../../../public/logo.png";
 import Image from "next/image";
 import MarkdownView from "react-showdown";
+import { useDraft } from "@/app/contexts/DraftProvider";
 
-interface DraftProps {
-  draft: string;
-}
+export default function Draft() {
+  const { lastDraft } = useDraft();
 
-export default function Draft(props: DraftProps) {
   function defaultText() {
     return (
       <div className={style.wrapper}>
@@ -42,10 +43,10 @@ export default function Draft(props: DraftProps) {
     );
   }
 
-  return props.draft ? (
+  return lastDraft ? (
     <div className={style.drafWrapper}>
       <MarkdownView
-        markdown={props.draft}
+        markdown={lastDraft}
         options={{ tables: true, emoji: true }}
       />
     </div>

@@ -3,14 +3,14 @@
 import React, { ReactNode, createContext, useContext, useState } from "react";
 import Loader from "../components/loader/loader";
 
-type LoaderContext = {
+interface LoaderContext {
   showLoader: () => void;
   hideLoader: () => void;
-};
+}
 
-type LoaderContextProvider = {
+interface LoaderContextProvider {
   children: ReactNode;
-};
+}
 
 export const LoaderContext = createContext<LoaderContext | undefined>(
   undefined

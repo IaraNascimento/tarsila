@@ -1,45 +1,39 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
+import { useRouter } from "next/navigation";
+import { useLoader } from "../contexts/LoaderProvider";
+import { useAuth } from "../contexts/AuthProvider";
+import { useDialog } from "../contexts/DialogsProvider";
+import { firstLoad, Conversation } from "../services/services";
 import Chat from "../components/chat/chat";
 import Draft from "../components/draft/draft";
 import style from "./page.module.css";
-import { firstLoad, Conversation } from "../services/services";
-import { useLoader } from "../contexts/LoaderProvider";
-import { useAuth } from "../contexts/AuthProvider";
 
 export default function Criar() {
-  const { showLoader, hideLoader } = useLoader();
+  const { push } = useRouter();
   const { currentUser } = useAuth();
-  const [conversation, setConversation] = useState<Conversation>();
-
-  function newMessage(messages: Conversation): void {
-    const lastMessage = messages.history.at(-1)
-    if (lastMessage && lastMessage.message.trim().length > 0) {
-      setConversation(messages);
-    } else {
-      const errorMsg = "Mensagem não pode ser vazia";
-      alert(errorMsg);
-      console.error(errorMsg);
-    }
-  }
+  const { showLoader, hideLoader } = useLoader();
+  const { setDialogs } = useDialog();
 
   useEffect(() => {
     showLoader();
-      firstLoad(currentUser && currentUser.email || "")
+    if (!!currentUser && currentUser.email) {
+      firstLoad(currentUser.email)
         .then((data) => {
-          newMessage((data as Conversation));
+          setDialogs((data as Conversation).history);
+        })
+        .catch(() => {
+          push("login");
         })
         .finally(() => hideLoader());
-  }, []);
+    }
+  }, [currentUser]);
 
   return (
     <main className={style.wrapper}>
-      <Draft draft={conversation?.draft || ""} />
-      <Chat
-        chatId={currentUser?.email || "" }
-        messages={conversation?.history || []}
-      />
+      <Draft />
+      <Chat />
     </main>
   );
 }

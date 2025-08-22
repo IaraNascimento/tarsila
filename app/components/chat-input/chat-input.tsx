@@ -1,17 +1,37 @@
+"use client";
+
 import { FormEvent, useEffect, useRef, useState } from "react";
-import { Conversation, Message, RequestError, sendMessage } from "@/app/services/services";
+import { useAuth } from "@/app/contexts/AuthProvider";
+import { useDialog } from "@/app/contexts/DialogsProvider";
+import { useDraft } from "@/app/contexts/DraftProvider";
+import {
+  Conversation,
+  Message,
+  MSG_TYPES,
+  RequestError,
+  sendMessage,
+} from "@/app/services/services";
 import style from "./chat-input.module.css";
 
-interface ChatInputProps {
-  chatId: string;
-  messages: Message[];
-}
+export default function ChatInput() {
+  const { currentUser } = useAuth();
+  const { addDialog, setDialogs } = useDialog();
+  const { addDraft } = useDraft();
 
-export default function ChatInput(props: Readonly<ChatInputProps>) {
   const targetRef = useRef<null | HTMLTextAreaElement>(null);
 
   const [loading, setLoading] = useState<boolean>(false);
-  const [message, setMessage] = useState<string>("");
+  const [userNewMessage, setUserNewMessage] = useState<string>("");
+
+  function newMessage(message: Message): void {
+    if (!!message && !!message.message.trim().length) {
+      addDialog(message);
+    } else {
+      const errorMsg = "Mensagem não pode ser vazia";
+      alert(errorMsg);
+      console.error(errorMsg);
+    }
+  }
 
   function handleFormSubmit(event: FormEvent, newMsg: string): void {
     event.preventDefault();
@@ -19,19 +39,23 @@ export default function ChatInput(props: Readonly<ChatInputProps>) {
   }
 
   function handleSubmit(newMsg: string): void {
+    newMessage({ message: newMsg, msg_type: MSG_TYPES.USER_TEXT });
     setLoading(true);
-    sendMessage(props.chatId, newMsg)
-      .then((data: Conversation | RequestError) => {
-        setMessage("");
+    sendMessage(currentUser?.email || "", newMsg).then(
+      (data: Conversation | RequestError) => {
+        setDialogs((data as Conversation).history);
+        addDraft((data as Conversation).draft);
+        setUserNewMessage("");
         setLoading(false);
-      });
+      }
+    );
   }
 
   useEffect(() => {
     const listener = (event: KeyboardEvent) => {
       if (event.code === "Enter" || event.code === "NumpadEnter") {
         // event.preventDefault();
-        handleSubmit(message);
+        handleSubmit(userNewMessage);
       }
     };
     if (targetRef.current) {
@@ -42,18 +66,18 @@ export default function ChatInput(props: Readonly<ChatInputProps>) {
         targetRef.current.removeEventListener("keydown", listener);
       }
     };
-  }, [message]);
+  }, [userNewMessage]);
 
   return (
     <form
       className={style.wrapper}
-      onSubmit={(e) => handleFormSubmit(e, message)}
+      onSubmit={(e) => handleFormSubmit(e, userNewMessage)}
     >
       <textarea
         ref={targetRef}
-        value={message}
+        value={userNewMessage}
         disabled={loading}
-        onChange={(event) => setMessage(event.target.value)}
+        onChange={(event) => setUserNewMessage(event.target.value)}
         className={style.textarea}
         placeholder="Escreva aqui sua mensagem..."
       ></textarea>

@@ -3,6 +3,8 @@ import type { Metadata } from "next";
 import { Work_Sans } from "next/font/google";
 import { AuthProvider } from "./contexts/AuthProvider";
 import { LoaderProvider } from "./contexts/LoaderProvider";
+import { DraftProvider } from "./contexts/DraftProvider";
+import { DialogProvider } from "./contexts/DialogsProvider";
 import Header from "./components/header/header";
 import "./globals.css";
 
@@ -24,12 +26,16 @@ export default function RootLayout({
     <React.StrictMode>
       <AuthProvider>
         <LoaderProvider>
-          <html lang="pt-br" className={fontWorkSans.className}>
-            <body>
-              <Header />
-              {children}
-            </body>
-          </html>
+          <DraftProvider>
+            <DialogProvider>
+              <html lang="pt-br" className={fontWorkSans.className}>
+                <body>
+                  <Header />
+                  {children}
+                </body>
+              </html>
+            </DialogProvider>
+          </DraftProvider>
         </LoaderProvider>
       </AuthProvider>
     </React.StrictMode>
