@@ -39,7 +39,11 @@ export default function ChatInput() {
   }
 
   function handleSubmit(newMsg: string): void {
-    newMessage({ message: newMsg, msg_type: MSG_TYPES.USER_TEXT });
+    newMessage({
+      message: newMsg,
+      msg_type: MSG_TYPES.USER_TEXT,
+      timestamp: String(new Date()),
+    });
     setLoading(true);
     sendMessage(currentUser?.email || "", newMsg).then(
       (data: Conversation | RequestError) => {
