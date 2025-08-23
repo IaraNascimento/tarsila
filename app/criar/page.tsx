@@ -13,15 +13,15 @@ import style from "./page.module.css";
 export default function Criar() {
   const renderAfterCalled = useRef(false);
   const { push } = useRouter();
-  const { currentUser } = useAuth();
+  const { currentUser, currentChatId } = useAuth();
   const { showLoader, hideLoader } = useLoader();
   const { setDialogs } = useDialog();
 
   useEffect(() => {
     if (!renderAfterCalled.current) {
       showLoader();
-      if (!!currentUser && currentUser.email) {
-        firstLoad(currentUser.email, String(new Date().getTime()))
+      if (!!currentUser && currentUser.email && currentChatId) {
+        firstLoad(currentUser.email, currentChatId)
           .then((data) => {
             setDialogs((data as Conversation).history);
           })
@@ -29,6 +29,8 @@ export default function Criar() {
             push("login");
           })
           .finally(() => hideLoader());
+      } else {
+        push("login");
       }
     }
     renderAfterCalled.current = true;

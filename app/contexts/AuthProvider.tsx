@@ -18,6 +18,7 @@ import { auth } from "../auth/firebase";
 
 interface AuthContextType {
   currentUser: User | null;
+  currentChatId: string | null;
   signIn: () => Promise<void>;
   logOut: () => Promise<void>;
 }
@@ -39,10 +40,14 @@ export const useAuth = () => {
 
 export const AuthProvider = ({ children }: AuthProviderProps) => {
   const [currentUser, setCurrentUser] = useState<User | null>(null);
+  const [currentChatId, setCurrentChatId] = useState<string | null>(null);
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       setCurrentUser(user);
+      setCurrentChatId(
+        String(user?.email) + "-" + String(new Date().getTime())
+      );
     });
     return unsubscribe;
   }, []);
@@ -70,6 +75,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
 
   const value = {
     currentUser,
+    currentChatId,
     signIn,
     logOut,
   };

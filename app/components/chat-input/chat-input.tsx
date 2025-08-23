@@ -14,7 +14,7 @@ import {
 import style from "./chat-input.module.css";
 
 export default function ChatInput() {
-  const { currentUser } = useAuth();
+  const { currentChatId } = useAuth();
   const { addDialog, setDialogs } = useDialog();
   const { addDraft } = useDraft();
 
@@ -45,7 +45,7 @@ export default function ChatInput() {
       timestamp: String(new Date()),
     });
     setLoading(true);
-    sendMessage(currentUser?.email || "", newMsg).then(
+    sendMessage(currentChatId || "", newMsg).then(
       (data: Conversation | RequestError) => {
         setDialogs((data as Conversation).history);
         addDraft((data as Conversation).draft);
@@ -55,22 +55,22 @@ export default function ChatInput() {
     );
   }
 
-  useEffect(() => {
-    const listener = (event: KeyboardEvent) => {
-      if (event.code === "Enter" || event.code === "NumpadEnter") {
-        // event.preventDefault();
-        handleSubmit(userNewMessage);
-      }
-    };
-    if (targetRef.current) {
-      targetRef.current.addEventListener("keydown", listener);
-    }
-    return () => {
-      if (targetRef.current) {
-        targetRef.current.removeEventListener("keydown", listener);
-      }
-    };
-  }, [userNewMessage]);
+  // useEffect(() => {
+  //   const listener = (event: KeyboardEvent) => {
+  //     if (event.code === "Enter" && event.code === "NumpadEnter") {
+  //       // event.preventDefault();
+  //       handleSubmit(userNewMessage);
+  //     }
+  //   };
+  //   if (targetRef.current) {
+  //     targetRef.current.addEventListener("keydown", listener);
+  //   }
+  //   return () => {
+  //     if (targetRef.current) {
+  //       targetRef.current.removeEventListener("keydown", listener);
+  //     }
+  //   };
+  // }, [userNewMessage]);
 
   return (
     <form
