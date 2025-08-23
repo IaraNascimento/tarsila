@@ -9,20 +9,25 @@ export enum MSG_TYPES {
 export type Message = {
   msg_type: MSG_TYPES;
   message: string;
-}
+  timestamp: string;
+};
 
 export interface RequestError {
   errorMsg: string;
 }
 
 export interface Conversation {
-  history: Message[],
-  draft: string
+  history: Message[];
+  draft: string;
 }
 
-export async function firstLoad(chat_id: string): Promise<Conversation | RequestError> {
-  const path = "/v1/new-chat";
+export async function firstLoad(
+  user: string,
+  chat_id: string
+): Promise<Conversation | RequestError> {
+  const path = "/v1/start-chat";
   const body = JSON.stringify({
+    user,
     chat_id,
   });
 

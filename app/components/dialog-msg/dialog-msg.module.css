@@ -21,7 +21,7 @@
 .timeStamp {
   min-width: 160px;
   width: calc(100% - 16px);
-  font-size: 8px;
+  font-size: 11px;
   margin: 0 0 -8px 16px;
   color: var(--white);
   text-align: right;

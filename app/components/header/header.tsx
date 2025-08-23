@@ -26,7 +26,6 @@ export default function Header() {
 
   return (
     <header className={style.header}>
-      {!currentUser && <button onClick={() => goToLogin()}>login</button>}
       {!!currentUser && (
         <>
           <span className={style.userName}>{currentUser.displayName}</span>
