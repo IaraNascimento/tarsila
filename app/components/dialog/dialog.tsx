@@ -4,6 +4,7 @@ import { useEffect, useRef } from "react";
 import { useDialog } from "@/app/contexts/DialogsProvider";
 import { MSG_TYPES } from "@/app/services/services";
 import style from "./dialog.module.css";
+import DialogMsg from "../dialog-msg/dialog-msg";
 
 export default function Dialog() {
   const targetRef = useRef<null | HTMLDivElement>(null);
@@ -19,16 +20,12 @@ export default function Dialog() {
     <div className={style.wrapper} ref={targetRef}>
       <div className={style.inner}>
         {dialogs.map((dialog, index) => (
-          <p
-            className={
-              dialog.msg_type === MSG_TYPES.AI_TEXT
-                ? style.iaMessage
-                : style.message
-            }
-            key={index}
-          >
-            {dialog.message}
-          </p>
+          <DialogMsg
+            key={String(index)}
+            timeStamp={String(index)}
+            message={dialog.message}
+            msgType={dialog.msg_type}
+          />
         ))}
       </div>
     </div>

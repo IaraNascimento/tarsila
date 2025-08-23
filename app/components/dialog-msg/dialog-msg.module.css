@@ -1,0 +1,29 @@
+.iaMessage,
+.userMessage {
+  border-radius: 8px;
+  padding: 16px;
+  color: var(--white);
+  margin-bottom: 16px;
+  max-width: 90%;
+}
+
+.iaMessage {
+  background-color: var(--main-tertiary);
+  align-self: self-start;
+}
+
+.userMessage {
+  background: var(--variant-tertiary);
+  align-self: self-end;
+  margin-right: 16px;
+}
+
+.timeStamp {
+  min-width: 160px;
+  width: calc(100% - 16px);
+  font-size: 8px;
+  margin: 0 0 -8px 16px;
+  color: var(--white);
+  text-align: right;
+  opacity: 0.5;
+}
