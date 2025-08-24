@@ -25,8 +25,8 @@ export default function Dialog() {
   }, [dialogs.length]);
 
   return (
-    <div className={style.wrapper} ref={targetRef}>
-      <div className={style.inner}>
+    <div className={style.wrapper}>
+      <div className={style.inner} ref={targetRef}>
         {dialogs.map((dialog) => (
           <DialogMsg
             key={String(dialog.timestamp)}
