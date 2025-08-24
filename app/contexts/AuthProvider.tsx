@@ -17,6 +17,8 @@ import {
 import { auth } from "../auth/firebase";
 
 interface AuthContextType {
+  isAuthenticated: boolean;
+  finished: boolean;
   currentUser: User | null;
   currentChatId: string | null;
   signIn: () => Promise<void>;
@@ -39,41 +41,39 @@ export const useAuth = () => {
 };
 
 export const AuthProvider = ({ children }: AuthProviderProps) => {
+  const [finished, setFinished] = useState<boolean>(false);
   const [currentUser, setCurrentUser] = useState<User | null>(null);
   const [currentChatId, setCurrentChatId] = useState<string | null>(null);
 
   useEffect(() => {
+    setFinished(false);
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       setCurrentUser(user);
       setCurrentChatId(
         String(user?.email) + "-" + String(new Date().getTime())
       );
+      setFinished(true);
     });
     return unsubscribe;
   }, []);
 
   const signIn = async () => {
+    setFinished(false);
     try {
       await signInWithPopup(auth, provider);
-    } catch (error) {
-      //   // Handle Errors here.
-      //   const errorCode = error.code;
-      //   const errorMessage = error.message;
-      //   // The email of the user's account used.
-      //   const email = error.customData.email;
-      //   // The AuthCredential type that was used.
-      //   const credential_1 = GoogleAuthProvider.credentialFromError(error);
-    }
+    } catch (error) {}
   };
 
   const logOut = async () => {
-    console.log("Sair da Aplicação");
+    setFinished(false);
     try {
       await signOut(auth);
     } catch (error) {}
   };
 
   const value = {
+    isAuthenticated: !!currentUser?.email,
+    finished,
     currentUser,
     currentChatId,
     signIn,

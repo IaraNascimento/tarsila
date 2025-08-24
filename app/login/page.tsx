@@ -9,12 +9,12 @@ import style from "./page.module.css";
 export default function Login() {
   const { push } = useRouter();
   const { showLoader, hideLoader } = useLoader();
-  const { currentUser, signIn } = useAuth();
+  const { isAuthenticated, signIn } = useAuth();
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
 
   function login() {
     showLoader();
-    if (!currentUser) {
+    if (!isAuthenticated) {
       signIn()
         .then(() => {})
         .catch(() => {
@@ -26,20 +26,21 @@ export default function Login() {
   }
 
   useEffect(() => {
-    if (!!currentUser) {
+    showLoader();
+    if (isAuthenticated) {
       setErrorMsg(null);
-      push("criar");
+      push("/criar");
+    } else {
+      hideLoader();
     }
-  }, [currentUser]);
-
-  useEffect(() => {
-    hideLoader();
-  }, []);
+  }, [isAuthenticated]);
 
   return (
     <main>
       <div className={style.loginBox}>
-        <button onClick={() => login()}>entrar com google</button>
+        <button onClick={() => login()} disabled={isAuthenticated}>
+          entrar com google
+        </button>
         {errorMsg && <p>{errorMsg}</p>}
       </div>
     </main>
