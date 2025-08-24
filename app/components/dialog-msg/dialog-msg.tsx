@@ -12,7 +12,7 @@ interface DialogMsgProps {
 
 export default function DialogMsg(props: Readonly<DialogMsgProps>) {
   return (
-    <p
+    <div
       className={
         props.msgType === MSG_TYPES.AI_TEXT
           ? style.iaMessage
@@ -26,6 +26,6 @@ export default function DialogMsg(props: Readonly<DialogMsgProps>) {
 
       <br />
       <div className={style.timeStamp}>{props.timeStamp}</div>
-    </p>
+    </div>
   );
 }

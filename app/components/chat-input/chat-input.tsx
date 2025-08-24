@@ -1,6 +1,6 @@
 "use client";
 
-import { FormEvent, useEffect, useRef, useState } from "react";
+import { FormEvent, KeyboardEvent, useState } from "react";
 import { useAuth } from "@/app/contexts/AuthProvider";
 import { useDialog } from "@/app/contexts/DialogsProvider";
 import { useDraft } from "@/app/contexts/DraftProvider";
@@ -17,9 +17,6 @@ export default function ChatInput() {
   const { currentChatId } = useAuth();
   const { addDialog, setDialogs } = useDialog();
   const { addDraft } = useDraft();
-
-  const targetRef = useRef<null | HTMLTextAreaElement>(null);
-
   const [loading, setLoading] = useState<boolean>(false);
   const [userNewMessage, setUserNewMessage] = useState<string>("");
 
@@ -31,11 +28,6 @@ export default function ChatInput() {
       alert(errorMsg);
       console.error(errorMsg);
     }
-  }
-
-  function handleFormSubmit(event: FormEvent, newMsg: string): void {
-    event.preventDefault();
-    handleSubmit(`${newMsg}`);
   }
 
   function handleSubmit(newMsg: string): void {
@@ -55,22 +47,17 @@ export default function ChatInput() {
     );
   }
 
-  // useEffect(() => {
-  //   const listener = (event: KeyboardEvent) => {
-  //     if (event.code === "Enter" && event.code === "NumpadEnter") {
-  //       // event.preventDefault();
-  //       handleSubmit(userNewMessage);
-  //     }
-  //   };
-  //   if (targetRef.current) {
-  //     targetRef.current.addEventListener("keydown", listener);
-  //   }
-  //   return () => {
-  //     if (targetRef.current) {
-  //       targetRef.current.removeEventListener("keydown", listener);
-  //     }
-  //   };
-  // }, [userNewMessage]);
+  function handleFormSubmit(event: FormEvent, newMsg: string): void {
+    event.preventDefault();
+    handleSubmit(`${newMsg}`);
+  }
+
+  function handleKeyDown(event: KeyboardEvent, newMsg: string): void {
+    if (event.key === "Enter" && !event.shiftKey) {
+      event.preventDefault();
+      handleSubmit(newMsg);
+    }
+  }
 
   return (
     <form
@@ -78,12 +65,12 @@ export default function ChatInput() {
       onSubmit={(e) => handleFormSubmit(e, userNewMessage)}
     >
       <textarea
-        ref={targetRef}
         value={userNewMessage}
         disabled={loading}
-        onChange={(event) => setUserNewMessage(event.target.value)}
+        onKeyDown={(e) => handleKeyDown(e, userNewMessage)}
+        onChange={(e) => setUserNewMessage(e.target.value)}
         className={style.textarea}
-        placeholder="Escreva aqui sua mensagem..."
+        placeholder="Escreva aqui sua mensagem... (Shift + Enter para quebrar linha)"
       ></textarea>
       <button type="submit" disabled={loading}>
         enviar
