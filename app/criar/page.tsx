@@ -12,14 +12,14 @@ import Draft from "../components/draft/draft";
 import style from "./page.module.css";
 
 export default function Criar() {
-  const renderAfterCalled = useRef(false);
+  let renderAfterCalled = false;
   // const { push } = useRouter();
   const { currentUser, currentChatId } = useAuth();
   const { showLoader, hideLoader } = useLoader();
   const { setDialogs } = useDialog();
 
   useEffect(() => {
-    if (!renderAfterCalled.current) {
+    if (!renderAfterCalled) {
       showLoader();
       if (!!currentUser && currentUser.email && currentChatId) {
         firstLoad(currentUser.email, currentChatId)
@@ -33,8 +33,8 @@ export default function Criar() {
       } else {
         // push("/login");
       }
+      renderAfterCalled = true;
     }
-    renderAfterCalled.current = true;
   }, []);
 
   return (
