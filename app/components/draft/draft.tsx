@@ -46,6 +46,7 @@ export default function Draft() {
   return lastDraft ? (
     <div className={style.drafWrapper}>
       <MarkdownView
+        className="markdown"
         markdown={lastDraft}
         options={{ tables: true, emoji: true }}
       />

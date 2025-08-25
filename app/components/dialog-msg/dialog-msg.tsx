@@ -20,6 +20,7 @@ export default function DialogMsg(props: Readonly<DialogMsgProps>) {
       }
     >
       <MarkdownView
+        className="markdown"
         markdown={props.message}
         options={{ tables: true, emoji: true }}
       />

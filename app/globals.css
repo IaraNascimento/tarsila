@@ -58,3 +58,27 @@ button:disabled {
 strong {
   font-weight: bolder;
 }
+
+.markdown {
+  text-align: justify;
+}
+
+.markdown h1 {
+  line-height: 2em;
+}
+
+.markdown h2 {
+  line-height: 1.5em;
+}
+
+.markdown p {
+  margin-bottom: 8px;
+}
+
+.markdown :where(ul, ol) {
+  margin: 8px 0 16px 16px;
+}
+
+.markdown :where(ul, ol) li {
+  margin-bottom: 8px;
+}
