@@ -1,12 +1,18 @@
 .header {
   position: absolute;
   text-align: right;
-  top: 0;
-  right: 0;
+  top: 8px;
+  right: 8px;
   padding: 16px;
+  border-radius: 8px;
+  background-color: var(--main-primary);
+  display: flex;
+  align-items: start;
+  z-index: 1;
 }
 
 .userName {
-  background-color: var(--white);
+  display: inline-block;
+  color: var(--white);
   margin-right: 16px;
 }

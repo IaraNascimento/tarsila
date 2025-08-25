@@ -17,7 +17,11 @@ export default function Header() {
     <header className={style.header}>
       {!!currentUser && (
         <>
-          <span className={style.userName}>{currentUser.displayName}</span>
+          <div className={style.userName}>
+            Bem vinde,
+            <br />
+            {currentUser.displayName}
+          </div>
           <button onClick={() => leave()}>sair</button>
         </>
       )}
