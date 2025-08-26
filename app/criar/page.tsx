@@ -1,7 +1,6 @@
 "use client";
 
-import { useEffect, useRef } from "react";
-// import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
 import { useLoader } from "../contexts/LoaderProvider";
 import { useAuth } from "../contexts/AuthProvider";
 import { useDialog } from "../contexts/DialogsProvider";
@@ -13,10 +12,22 @@ import style from "./page.module.css";
 
 export default function Criar() {
   let renderAfterCalled = false;
-  // const { push } = useRouter();
+  const [isMobile, setIsMobile] = useState<boolean>(true);
+  const [showResult, setShowResult] = useState<boolean>(false);
   const { currentUser, currentChatId } = useAuth();
   const { showLoader, hideLoader } = useLoader();
   const { setDialogs } = useDialog();
+
+  useEffect(() => {
+    function handleResize() {
+      setIsMobile(window.innerWidth < 980);
+    }
+    window.addEventListener("resize", handleResize);
+    handleResize();
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
 
   useEffect(() => {
     if (!renderAfterCalled) {
@@ -26,12 +37,7 @@ export default function Criar() {
           .then((data) => {
             setDialogs((data as Conversation).history);
           })
-          .catch(() => {
-            // push("/login");
-          })
           .finally(() => hideLoader());
-      } else {
-        // push("/login");
       }
       renderAfterCalled = true;
     }
@@ -40,8 +46,29 @@ export default function Criar() {
   return (
     <ProtectedRoute>
       <main className={style.wrapper}>
-        <Draft />
-        <Chat />
+        <div
+          className={`${style.slider} ${
+            showResult ? style.showResult : style.showChat
+          }`}
+        >
+          <div className={style.panel}>
+            <Draft />
+          </div>
+          <div className={style.panel}>
+            <Chat />
+          </div>
+        </div>
+
+        {isMobile && (
+          <button
+            className={`${style.btnChangeView} ${
+              showResult ? style.showResult : style.showChat
+            }`}
+            onClick={() => setShowResult((prev) => !prev)}
+          >
+            {showResult ? "< ver o resultado" : "voltar ao chat >"}
+          </button>
+        )}
       </main>
     </ProtectedRoute>
   );

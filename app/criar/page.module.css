@@ -1,6 +1,76 @@
+.wrapper,
+.slider,
+.panel {
+  position: relative;
+}
+
 .wrapper {
   background-color: var(--main-secondary);
   display: flex;
+  padding: 8px;
   height: 100vh;
-  padding: 16px;
+}
+
+.slider {
+  display: flex;
+  transition: transform 0.8s ease-in-out;
+}
+
+.panel {
+  width: calc(98vw - 16px);
+  height: 100%;
+  flex-shrink: 0;
+  overflow-y: auto;
+}
+
+.panel > * {
+  height: 100%;
+}
+
+.showChat {
+  transform: translateX(0);
+}
+
+.showResult {
+  transform: translateX(calc(-98vw + 32px));
+}
+
+.btnChangeView {
+  position: absolute;
+  transition: all 0.8s ease-in-out;
+  z-index: 1;
+  width: 200px;
+}
+
+.btnChangeView.showChat {
+  top: calc(100vh - 80px);
+  left: calc(100vw - 200px - 8px);
+}
+
+.btnChangeView.showResult {
+  top: 80px;
+  left: calc(98vw - 24px);
+}
+
+@media (min-width: 980px) {
+  .wrapper {
+    padding: 16px;
+  }
+
+  .slider {
+    width: 100%;
+  }
+
+  .slider > :first-child {
+    width: 35%;
+  }
+
+  .slider > :last-child {
+    width: calc(65% - 16px);
+    margin-left: 16px;
+  }
+
+  .btnChangeView {
+    display: none;
+  }
 }
