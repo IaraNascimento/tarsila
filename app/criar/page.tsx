@@ -18,6 +18,8 @@ export default function Criar() {
   const { showLoader, hideLoader } = useLoader();
   const { setDialogs } = useDialog();
 
+  const chatId = currentChatId ? currentChatId : null
+
   useEffect(() => {
     function handleResize() {
       setIsMobile(window.innerWidth < 980);
@@ -32,8 +34,8 @@ export default function Criar() {
   useEffect(() => {
     if (!renderAfterCalled) {
       showLoader();
-      if (!!currentUser && currentUser.email && currentChatId) {
-        firstLoad(currentUser.email, currentChatId)
+      if (!!currentUser && currentUser.email) {
+        firstLoad(currentUser.email, chatId)
           .then((data) => {
             setDialogs((data as Conversation).history);
           })

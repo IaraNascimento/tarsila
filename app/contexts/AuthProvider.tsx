@@ -20,7 +20,7 @@ interface AuthContextType {
   isAuthenticated: boolean;
   finished: boolean;
   currentUser: User | null;
-  currentChatId: string | null;
+  currentChatId: number | null;
   signIn: () => Promise<void>;
   logOut: () => Promise<void>;
 }
@@ -43,14 +43,14 @@ export const useAuth = () => {
 export const AuthProvider = ({ children }: AuthProviderProps) => {
   const [finished, setFinished] = useState<boolean>(false);
   const [currentUser, setCurrentUser] = useState<User | null>(null);
-  const [currentChatId, setCurrentChatId] = useState<string | null>(null);
+  const [currentChatId, setCurrentChatId] = useState<number | null>(null);
 
   useEffect(() => {
     setFinished(false);
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       setCurrentUser(user);
       setCurrentChatId(
-        String(new Date().getTime())
+        new Date().getTime()
       );
       setFinished(true);
     });

@@ -23,7 +23,7 @@ export interface Conversation {
 
 export async function firstLoad(
   user: string,
-  chat_id: string
+  chat_id: number | null
 ): Promise<Conversation | RequestError> {
   const path = "/v1/start-chat";
   const body = JSON.stringify({
@@ -56,7 +56,7 @@ export async function firstLoad(
 }
 
 export async function sendMessage(
-  chat_id: string,
+  chat_id: number | null,
   message: string,
   file_ids: Array<string>
 ): Promise<Conversation | RequestError> {
@@ -90,13 +90,13 @@ export async function sendMessage(
 }
 
 export async function addFile(
-  chat_id: string,
+  chat_id: number | null,
   files: Array<File>
 ): Promise<Array<string> | RequestError> {
   const path = "/v1/upload";
-
+  const chatID = JSON.stringify(chat_id)
   const body = new FormData();
-  body.append("chat_id", chat_id);
+  body.append("chat_id", chatID);
   files.forEach((file) => {
     body.append("docs", file);
   });
