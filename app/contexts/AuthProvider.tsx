@@ -50,7 +50,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       setCurrentUser(user);
       setCurrentChatId(
-        String(user?.email) + "-" + String(new Date().getTime())
+        String(new Date().getTime())
       );
       setFinished(true);
     });
