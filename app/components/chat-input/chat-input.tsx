@@ -23,9 +23,6 @@ export default function ChatInput() {
   const [userNewMessage, setUserNewMessage] = useState<string>("");
   const [filesToSend, setFilesToSend] = useState<Array<string>>([]);
 
-  const chatId = currentChatId ? currentChatId : null
-  const user = currentUser ? `${currentUser}` : ""
-
   function newMessage(message: Message): void {
     if (!!message && !!message.message.trim().length) {
       addDialog(message);
@@ -37,6 +34,8 @@ export default function ChatInput() {
   }
 
   function handleSubmit(newMsg: string): void {
+    const chatId = currentChatId ? currentChatId : null
+    const user = currentUser?.email ? currentUser.email : ""
     newMessage({
       message: newMsg,
       msg_type: MSG_TYPES.USER_TEXT,
@@ -71,6 +70,8 @@ export default function ChatInput() {
   }
 
   function saveFiles(files: Array<File>): void {
+    const chatId = currentChatId ? currentChatId : null
+    const user = currentUser?.email ? currentUser.email : ""
     if (files.length) {
       setLoading(true);
       addFile(user, chatId, files)
