@@ -16,7 +16,7 @@ import style from "./chat-input.module.css";
 
 export default function ChatInput() {
   const uploadFileLink = useRef<HTMLInputElement>(null);
-  const { currentChatId } = useAuth();
+  const { currentChatId, currentUser} = useAuth();
   const { addDialog, setDialogs } = useDialog();
   const { addDraft } = useDraft();
   const [loading, setLoading] = useState<boolean>(false);
@@ -24,6 +24,7 @@ export default function ChatInput() {
   const [filesToSend, setFilesToSend] = useState<Array<string>>([]);
 
   const chatId = currentChatId ? currentChatId : null
+  const user = currentUser ? `${currentUser}` : ""
 
   function newMessage(message: Message): void {
     if (!!message && !!message.message.trim().length) {
@@ -42,7 +43,7 @@ export default function ChatInput() {
       timestamp: String(new Date()),
     });
     setLoading(true);
-    sendMessage(chatId, newMsg, filesToSend).then(
+    sendMessage(user, chatId, newMsg, filesToSend).then(
       (data: Conversation | RequestError) => {
         setDialogs((data as Conversation).history);
         addDraft((data as Conversation).draft);
@@ -72,7 +73,7 @@ export default function ChatInput() {
   function saveFiles(files: Array<File>): void {
     if (files.length) {
       setLoading(true);
-      addFile(chatId, files)
+      addFile(user, chatId, files)
         .then((filesIds) => {
           if ((filesIds as Array<string>).length) {
             setFilesToSend((prev) => [

@@ -56,12 +56,14 @@ export async function firstLoad(
 }
 
 export async function sendMessage(
+  user: string | "",
   chat_id: number | null,
   message: string,
   file_ids: Array<string>
 ): Promise<Conversation | RequestError> {
   const path = "/v1/chat/text";
   const body = JSON.stringify({
+    user,
     chat_id,
     message,
     file_ids,
@@ -90,12 +92,14 @@ export async function sendMessage(
 }
 
 export async function addFile(
+  user: string | "",
   chat_id: number | null,
   files: Array<File>
 ): Promise<Array<string> | RequestError> {
   const path = "/v1/upload";
   const chatID = JSON.stringify(chat_id)
   const body = new FormData();
+  body.append("user", user);
   body.append("chat_id", chatID);
   files.forEach((file) => {
     body.append("docs", file);
