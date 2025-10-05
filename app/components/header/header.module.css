@@ -1,14 +1,21 @@
 .header {
-  position: absolute;
   text-align: right;
-  top: 8px;
-  right: 8px;
   padding: 16px;
-  border-radius: 8px;
   background-color: var(--main-primary);
   display: flex;
-  align-items: start;
-  z-index: 1;
+  align-items: flex-start;
+  justify-content: space-between;
+  height: 4rem;
+  z-index: 999;
+}
+
+.navContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  background-color: var(--dark);
+  border-radius: 6px;
+  z-index: 99999;
 }
 
 .userName {
