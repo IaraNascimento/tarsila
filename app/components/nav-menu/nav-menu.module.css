@@ -1,0 +1,10 @@
+.container {
+  list-style-type: none;
+  width: max-content;
+  z-index: 999;
+}
+
+.item {
+  text-align: left;
+  padding: 16 32;
+}
