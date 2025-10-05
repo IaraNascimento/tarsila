@@ -58,6 +58,10 @@ button {
   cursor: pointer;
 }
 
+button:hover {
+  background-color: var(--main-primary);
+}
+
 textarea:disabled,
 button:disabled {
   cursor: progress;
