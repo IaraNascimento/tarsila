@@ -12,7 +12,7 @@ export type Message = {
   timestamp: string;
 };
 
-export type ChatId = number | null;
+export type ChatId = string | null;
 
 export type ChatType = {
   chat_id: ChatId;

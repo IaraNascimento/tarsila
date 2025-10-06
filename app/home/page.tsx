@@ -21,11 +21,11 @@ export default function Home() {
         .then((data) => {
           const pastChats = data as PastChats
           if (pastChats.chats.length > 0) {
-              updateChatsList(pastChats.chats);
+            updateChatsList(pastChats.chats);
           }
         })
     }
-  }, [currentUser, updateChatsList])
+  }, [currentUser])
         
   useEffect(() => {
     showLoader();
@@ -33,12 +33,12 @@ export default function Home() {
       push("/login");
     } else {
       loadChatList();
-      hideLoader();
     }
-  }, [hideLoader, isAuthenticated, loadChatList, push, showLoader]);
+    hideLoader();
+  }, []);
   
   function startNewChat () {
-    updateChatId(new Date().getTime());
+    updateChatId(new Date().getTime().toString());
     push("/chat");
   }
   

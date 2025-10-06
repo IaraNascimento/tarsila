@@ -30,7 +30,7 @@ export default function Header() {
           { chatsList.length > 0 
             && <>
               <MenuButton onClick={handleMenu} />
-              { isMenuOpen && <NavMenu menuItems={chatsList} /> }
+              { isMenuOpen && <NavMenu /> }
             </>
           }
         </div>

@@ -1,17 +1,17 @@
 "use client";
 
 import { ChatType } from "@/app/services/services";
+import { useHistory } from "@/app/contexts/HistoryProvider";
 import style from "./nav-menu.module.css";
 
-interface NavMenuProps {
-  menuItems: ChatType[]
-}
+export default function NavMenu() {
+  const { chatsList } = useHistory()
+  const list = chatsList.map(item => getItemLabel(item))
 
-export default function NavMenu({ menuItems }: NavMenuProps) {
   function getItemLabel(menuItem: ChatType) {
-    if (!menuItem.title && menuItem.chat_id !== null) {
-      const date = new Date(menuItem.chat_id);
-      
+    if (!menuItem.title && menuItem.chat_id) {
+      const id = parseInt(menuItem.chat_id);
+      const date = new Date(id);
       return date.toLocaleDateString("pt-BR", {
         year: "numeric",
         month: "long",
@@ -26,9 +26,9 @@ export default function NavMenu({ menuItems }: NavMenuProps) {
   return (
     <ul className={style.container} >
       {
-        menuItems.map(((item, i) => (
+        list.map(((item, i) => (
           <li key={i} className={style.item}>
-            {getItemLabel(item)}
+            { item }
           </li>
         )))
       }
