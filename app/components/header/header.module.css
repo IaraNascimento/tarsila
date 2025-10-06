@@ -1,6 +1,6 @@
 .header {
   text-align: right;
-  padding: 16px;
+  padding: 1rem;
   background-color: var(--main-primary);
   display: flex;
   align-items: flex-start;
