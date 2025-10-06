@@ -1,7 +1,7 @@
 "use client";
 
 import { ChatId, ChatType } from "../services/services";
-import { createContext, ReactNode, useContext, useEffect, useState } from "react";
+import { createContext, ReactNode, useContext, useState } from "react";
 
 interface HistoryContextType {
   chatsList: ChatType[];
@@ -26,13 +26,6 @@ export const useHistory = () => {
 export const HistoryProvider = ({ children }: HistoryProviderProps) => {
   const [pastChatsList, setPastChatsList] = useState<ChatType[]>([]);
   const [currentChatId, setCurrentChatId] = useState<ChatId>(null);
-
-  useEffect(() => {
-    setCurrentChatId(
-      new Date().getTime()
-      // 1759510342646
-    );
-  }, []);
 
   const value = {
     chatsList: pastChatsList,
