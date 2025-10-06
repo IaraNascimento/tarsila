@@ -1,0 +1,26 @@
+.wrapper,
+.slider,
+.panel {
+  position: relative;
+}
+
+.wrapper {
+  background-color: var(--main-secondary);
+  display: flex;
+  padding: 1rem;
+  height: calc(100vh - 4rem);
+  width: 100vw;
+}
+
+.panel {
+  background-color: var(--background);
+  height: 100%;
+  width: 100%;
+  overflow-y: auto;
+  border-radius: 1rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+}
