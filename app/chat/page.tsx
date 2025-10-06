@@ -14,7 +14,7 @@ import Chat from "../components/chat/chat";
 import Draft from "../components/draft/draft";
 import style from "./page.module.css";
 
-export default function Criar() {
+export default function ChatPage() {
   let renderAfterCalled = false;
   const [isMobile, setIsMobile] = useState<boolean>(true);
   const [showResult, setShowResult] = useState<boolean>(false);
