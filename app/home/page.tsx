@@ -13,7 +13,7 @@ export default function Home() {
   const { push } = useRouter();
   const { showLoader, hideLoader } = useLoader();
   const { isAuthenticated, currentUser } = useAuth();
-  const { updateChatsList } = useHistory();
+  const { updateChatsList, updateChatId, chatsList } = useHistory();
 
   const loadChatList = useCallback(() => {
     if (!!currentUser && currentUser.email) {
@@ -36,13 +36,25 @@ export default function Home() {
       hideLoader();
     }
   }, [hideLoader, isAuthenticated, loadChatList, push, showLoader]);
+  
+  function startNewChat () {
+    updateChatId(new Date().getTime());
+    push("/chat");
+  }
+  
+  function loadLastChat () {
+    if (chatsList.length > 0) {
+      updateChatId(chatsList[0].chat_id);
+      push("/chat");
+    }
+  }
 
   return (
     <ProtectedRoute>
       <main className={style.wrapper}>
         <div className={style.panel}>
-          <button>Criar novo</button>
-          <button>Continuar</button>
+          <button onClick={startNewChat}>Criar novo</button>
+          <button onClick={loadLastChat}>Continuar</button>
         </div>
       </main>
     </ProtectedRoute>
