@@ -9,8 +9,8 @@ interface NavMenuProps {
 
 export default function NavMenu({ menuItems }: NavMenuProps) {
   function getItemLabel(menuItem: ChatType) {
-    if (!menuItem.title) {
-      const date = new Date(parseInt(menuItem.chat_id));
+    if (!menuItem.title && menuItem.chat_id !== null) {
+      const date = new Date(menuItem.chat_id);
       
       return date.toLocaleDateString("pt-BR", {
         year: "numeric",
