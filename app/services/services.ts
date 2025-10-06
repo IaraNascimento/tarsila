@@ -12,8 +12,10 @@ export type Message = {
   timestamp: string;
 };
 
+export type ChatId = number | null;
+
 export type ChatType = {
-  chat_id: string;
+  chat_id: ChatId;
   title: string | null;
 }
 
@@ -31,9 +33,9 @@ export interface PastChats {
   next_cursor: number
 }
 
-export async function firstLoad(
+export async function startChat(
   user: string,
-  chat_id: number | null
+  chat_id: ChatId,
 ): Promise<Conversation | RequestError> {
   const path = "/v1/start-chat";
   const body = JSON.stringify({
@@ -88,7 +90,7 @@ export async function getPastChats(
 
 export async function sendMessage(
   user: string | "",
-  chat_id: number | null,
+  chat_id: ChatId,
   message: string,
   file_ids: Array<string>
 ): Promise<Conversation | RequestError> {
@@ -124,7 +126,7 @@ export async function sendMessage(
 
 export async function addFile(
   user: string | "",
-  chat_id: number | null,
+  chat_id: ChatId,
   files: Array<File>
 ): Promise<Array<string> | RequestError> {
   const path = "/v1/upload";

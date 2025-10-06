@@ -4,8 +4,12 @@ import { useEffect, useState } from "react";
 import { useLoader } from "../contexts/LoaderProvider";
 import { useAuth } from "../contexts/AuthProvider";
 import { useDialog } from "../contexts/DialogsProvider";
+import { useHistory } from "../contexts/HistoryProvider";
 import ProtectedRoute from "../auth/ProtectedRoute";
-import { firstLoad, Conversation } from "../services/services";
+import {
+  startChat,
+  Conversation,
+} from "../services/services";
 import Chat from "../components/chat/chat";
 import Draft from "../components/draft/draft";
 import style from "./page.module.css";
@@ -14,7 +18,8 @@ export default function Criar() {
   let renderAfterCalled = false;
   const [isMobile, setIsMobile] = useState<boolean>(true);
   const [showResult, setShowResult] = useState<boolean>(false);
-  const { currentUser, currentChatId } = useAuth();
+  const { currentUser } = useAuth();
+  const { currentChatId } = useHistory();
   const { showLoader, hideLoader } = useLoader();
   const { setDialogs } = useDialog();
 
@@ -35,7 +40,7 @@ export default function Criar() {
     if (!renderAfterCalled) {
       showLoader();
       if (!!currentUser && currentUser.email) {
-        firstLoad(currentUser.email, chatId)
+        startChat(currentUser.email, chatId)
           .then((data) => {
             setDialogs((data as Conversation).history);
           })

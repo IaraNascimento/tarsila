@@ -1,7 +1,8 @@
 "use client";
 
-import { FormEvent, KeyboardEvent, useEffect, useRef, useState } from "react";
+import { FormEvent, KeyboardEvent, useRef, useState } from "react";
 import { useAuth } from "@/app/contexts/AuthProvider";
+import { useHistory } from "@/app/contexts/HistoryProvider";
 import { useDialog } from "@/app/contexts/DialogsProvider";
 import { useDraft } from "@/app/contexts/DraftProvider";
 import {
@@ -16,7 +17,8 @@ import style from "./chat-input.module.css";
 
 export default function ChatInput() {
   const uploadFileLink = useRef<HTMLInputElement>(null);
-  const { currentChatId, currentUser} = useAuth();
+  const { currentUser} = useAuth();
+  const { currentChatId } = useHistory()
   const { addDialog, setDialogs } = useDialog();
   const { addDraft } = useDraft();
   const [loading, setLoading] = useState<boolean>(false);
