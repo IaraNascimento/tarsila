@@ -29,11 +29,11 @@ export default function Login() {
     showLoader();
     if (isAuthenticated) {
       setErrorMsg(null);
-      push("/criar");
+      push("/home");
     } else {
       hideLoader();
     }
-  }, [isAuthenticated]);
+  }, [hideLoader, isAuthenticated, push, showLoader]);
 
   return (
     <main>
