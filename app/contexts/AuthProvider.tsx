@@ -35,7 +35,7 @@ type AuthProviderProps = {
 export const useAuth = () => {
   const context = useContext(AuthContext);
   if (!context) {
-    throw new Error("useLoader must be used within a LoaderProvider");
+    throw new Error("useAuth must be used within a AuthProvider");
   }
   return context;
 };
