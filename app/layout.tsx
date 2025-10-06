@@ -32,7 +32,6 @@ export default function RootLayout({
               <DialogProvider>
                 <html lang="pt-br" className={fontWorkSans.className}>
                   <body>
-                    <Header />
                     {children}
                   </body>
                 </html>

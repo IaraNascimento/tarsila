@@ -3,6 +3,7 @@
 import { ReactNode, useEffect } from "react";
 import { useAuth } from "../contexts/AuthProvider";
 import { useRouter } from "next/navigation";
+import Header from "../components/header/header";
 
 export default function ProtectedRoute({
   children,
@@ -20,5 +21,8 @@ export default function ProtectedRoute({
     return null;
   }
 
-  return <>{children}</>;
+  return <>
+    <Header />
+    {children}
+  </>;
 }
